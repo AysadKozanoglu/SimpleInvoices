@@ -1,10 +1,6 @@
 #!/bin/bash
 ### set password for the mysql user inv
 
-### make sure that mysqld is running
-source $(dirname $0)/set_mysql_passwd.sh
-$(dirname $0)/mysqld.sh start
-
 ### get a new password for the mysql user 'inv'
 if [ "$mysql_passwd_inv" = 'random' ]
 then
@@ -23,6 +19,7 @@ then
 fi
 
 ### set password
+source $(dirname $0)/set_mysql_passwd.sh
 set_mysql_passwd inv $mysql_passwd_inv
 
 ### modify the configuration file of Drupal (settings.php)
