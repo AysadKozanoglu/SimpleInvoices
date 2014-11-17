@@ -1,6 +1,15 @@
 #!/bin/bash -x
 ### Configure the system and the application.
 
+### get config settings from a file
+if [ "$1" != '' ]
+then
+    settings=$1
+    set -a
+    source  $settings
+    set +a
+fi
+
 ### go to the directory of the script
 cd $(dirname $0)
 
@@ -9,7 +18,7 @@ cp -TdR overlay/ /
 
 config/cache.sh
 config/apache2.sh
-config/php.sh
+config/php5.sh
 config/sshd.sh
 
 #config/domain.sh
