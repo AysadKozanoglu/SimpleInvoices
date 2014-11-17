@@ -16,7 +16,7 @@ then
 fi
 
 ### copy the root directory
-cp -a /var/www/inv /var/www/$domain
+cp -a /var/www/inv.example.org /var/www/$domain
 chown www-data: -R /var/www/$domain/tmp
 chown root: /var/www/$domain/tmp/.htaccess
 
@@ -25,36 +25,37 @@ sed -i /etc/hosts.conf -e "/^127.0.0.1 $domain/d"
 echo "127.0.0.1 $domain" >> /etc/hosts.conf
 /etc/hosts_update.sh
 
-### create a new database
-mysql --defaults-file=/etc/mysql/debian.cnf -e "
-    DROP DATABASE IF EXISTS $dst;
-    CREATE DATABASE $dst;
-    GRANT ALL ON $dst.* TO btr@localhost;
+### database and user settings
+db_name=$(echo $domain | tr -d '_.-')
+db_user=$db_name
+db_pass=$(mcookie | head -c 16)
+
+### create a new database and user
+mysql='mysql --defaults-file=/etc/mysql/debian.cnf'
+$mysql -e "
+    DROP DATABASE IF EXISTS $db_name;
+    CREATE DATABASE $db_name;
+    GRANT ALL ON $db_name.* TO '$db_user'@'localhost' IDENTIFIED BY '$db_pass';
 "
 
-### modify settings.php
-domain=$(head -n 1 /etc/hosts.conf | cut -d' ' -f3)
-sub=${dst#*_}
-hostname=$sub.$domain
-sed -i $dst_dir/sites/default/settings.php \
-    -e "/^\\\$databases = array/,+10  s/'database' => .*/'database' => '$dst',/" \
-    -e "/^\\\$base_url/c \$base_url = \"https://$hostname\";" \
-    -e "/^\\\$conf\['memcache_key_prefix'\]/c \$conf['memcache_key_prefix'] = '$dst';"
+### import the tables and initial data
+$mysql -D $db_name < /etc/invoices/invoices.sql
 
+### modify config.php
+sed -i /var/www/$domain/config/config.php \
+    -e "/^database.params.username/ c database.params.username = $db_user" \
+    -e "/^database.params.password/ c database.params.password = $db_pass" \
+    -e "/^database.params.dbname/ c database.params.dbname = $db_name"
 
 ### copy and modify the configuration of apache2
 rm -f /etc/apache2/sites-{available,enabled}/$domain{,-ssl}.conf
 cp /etc/apache2/sites-available/{inv,$domain}.conf
 cp /etc/apache2/sites-available/{inv-ssl,$domain-ssl}.conf
 sed -i /etc/apache2/sites-available/$domain.conf \
-    -e "s#ServerName .*#ServerName $domain#" \
-    -e "s#RedirectPermanent .*#RedirectPermanent / https://$domain/#" \
-    -e "s#$src_dir#$dst_dir#g"
+    -e "s/inv\.example\.org/$domain/g"
 sed -i /etc/apache2/sites-available/$domain-ssl.conf \
-    -e "s#ServerName .*#ServerName $domain#" \
-    -e "s#$src_dir#$dst_dir#g"
+    -e "s/inv\.example\.org/$domain/g"
 a2ensite $domain $domain-ssl
 
 ### reload apache2 configuration
 /etc/init.d/apache2 reload
-#/etc/init.d/mysql restart

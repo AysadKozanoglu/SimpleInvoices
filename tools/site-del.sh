@@ -9,20 +9,17 @@ then
 fi
 domain=$1
 
-if [ -d "/var/www/$domain" ]
-then
-    echo "Domain $domain already exists."
-    exit 2
-fi
-
 ### remove the configuration of apache2
 rm -f /etc/apache2/sites-{available,enabled}/$domain{,-ssl}.conf
 /etc/init.d/apache2 reload
 
-### drop the database
-dbname=$domain
+### drop the database and the user
+db_name=$(echo $domain | tr -d '_.-')
+db_user=$db_name
 mysql --defaults-file=/etc/mysql/debian.cnf \
-      -e "DROP DATABASE IF EXISTS $dbname;"
+      -e "DROP DATABASE IF EXISTS $db_name;
+          GRANT USAGE ON *.* TO '$db_user'@'localhost';
+          DROP USER '$db_user'@'localhost';"
 
 ### remove the directory
 rm -rf /var/www/$domain
