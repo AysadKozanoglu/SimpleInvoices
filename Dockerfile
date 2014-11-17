@@ -11,4 +11,4 @@ RUN /tmp/simpleinv.sh
 
 ### Config the system.
 COPY . /app/
-RUN /app/install/{config.sh,settings.sh}
+RUN /app/install/config.sh /app/install/settings.sh
