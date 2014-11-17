@@ -12,7 +12,7 @@ container=$1
 domain=$2
 
 ### add a new site inside the container
-docker exec $container /app/tools/site-add $domain
+docker exec -t $container /app/tools/site-add.sh $domain
 
 ### add on wsproxy apache2 config files for the new domain
 cd /data/wsproxy/config/etc/apache2/sites-available/

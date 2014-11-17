@@ -49,8 +49,8 @@ sed -i /var/www/$domain/config/config.php \
 
 ### copy and modify the configuration of apache2
 rm -f /etc/apache2/sites-{available,enabled}/$domain{,-ssl}.conf
-cp /etc/apache2/sites-available/{inv,$domain}.conf
-cp /etc/apache2/sites-available/{inv-ssl,$domain-ssl}.conf
+cp /etc/apache2/sites-available/{inv.example.org,$domain}.conf
+cp /etc/apache2/sites-available/{inv.example.org-ssl,$domain-ssl}.conf
 sed -i /etc/apache2/sites-available/$domain.conf \
     -e "s/inv\.example\.org/$domain/g"
 sed -i /etc/apache2/sites-available/$domain-ssl.conf \

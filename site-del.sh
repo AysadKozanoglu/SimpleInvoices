@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 ### Remove a domain from wsproxy.
 
 ### get parameters
@@ -21,5 +21,5 @@ sed -i /data/wsproxy/hosts.txt -e "/^$container: $domain/d"
 /data/wsproxy/restart.sh
 
 ### delete the site from the container
-docker exec $container /app/tools/site-del $domain
+docker exec -t $container /app/tools/site-del.sh $domain
 
