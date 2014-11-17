@@ -20,3 +20,6 @@ sed -i /data/wsproxy/hosts.txt -e "/^$container: $domain/d"
 ### restart wsproxy
 /data/wsproxy/restart.sh
 
+### delete the site from the container
+docker exec $container /app/tools/site-del $domain
+
