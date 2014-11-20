@@ -3,8 +3,8 @@
 
 a2enmod ssl
 a2dissite 000-default
-a2ensite inv.example.org
-a2ensite inv.example.org-ssl
+a2ensite si.example.org
+a2ensite si.example.org-ssl
 a2enmod headers rewrite
 
 ln -sf /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf

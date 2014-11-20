@@ -3,7 +3,7 @@
 
 ### set some variables
 container="invoices"
-domain="inv.example.org"
+domain="si.example.org"
 
 ### create a new container
 docker create --name="$container" --hostname="$domain" \
