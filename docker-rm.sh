@@ -1,6 +1,6 @@
 #!/bin/bash
 
-container='invoices'
+container=${1:-invoices}
 
 ### remove the container and its base image
 docker stop $container

@@ -47,15 +47,19 @@ sed -i /var/www/$domain/config/config.php \
     -e "/^database.params.password/ c database.params.password = $db_pass" \
     -e "/^database.params.dbname/ c database.params.dbname = $db_name"
 
-### copy and modify the configuration of apache2
+### modify the configuration of apache2
 rm -f /etc/apache2/sites-{available,enabled}/$domain{,-ssl}.conf
+rm -f /etc/apache2/sites-{available,enabled}/m.$domain{,-ssl}.conf
 cp /etc/apache2/sites-available/{si.example.org,$domain}.conf
 cp /etc/apache2/sites-available/{si.example.org-ssl,$domain-ssl}.conf
-sed -i /etc/apache2/sites-available/$domain.conf \
-    -e "s/inv\.example\.org/$domain/g"
-sed -i /etc/apache2/sites-available/$domain-ssl.conf \
-    -e "s/inv\.example\.org/$domain/g"
-a2ensite $domain $domain-ssl
+cp /etc/apache2/sites-available/m.{si.example.org,$domain}.conf
+cp /etc/apache2/sites-available/m.{si.example.org-ssl,$domain-ssl}.conf
+for config_file in $domain.conf $domain-ssl.conf m.$domain.conf m.$domain-ssl.conf
+do
+    sed -i /etc/apache2/sites-available/$config_file \
+        -e "s/si\.example\.org/$domain/g"
+done 
+a2ensite $domain $domain-ssl m.$domain m.$domain-ssl
 
 ### reload apache2 configuration
 /etc/init.d/apache2 reload

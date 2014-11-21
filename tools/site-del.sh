@@ -11,6 +11,7 @@ domain=$1
 
 ### remove the configuration of apache2
 rm -f /etc/apache2/sites-{available,enabled}/$domain{,-ssl}.conf
+rm -f /etc/apache2/sites-{available,enabled}/m.$domain{,-ssl}.conf
 /etc/init.d/apache2 reload
 
 ### drop the database and the user
