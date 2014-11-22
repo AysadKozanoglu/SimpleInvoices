@@ -28,7 +28,7 @@ echo "127.0.0.1 $domain" >> /etc/hosts.conf
 
 ### database and user settings
 db_name=$(echo $domain | tr -d '_.-')
-db_user=$db_name
+db_user=u$(mcookie | head -c 15)
 db_pass=$(mcookie | head -c 16)
 
 ### create a new database and user
