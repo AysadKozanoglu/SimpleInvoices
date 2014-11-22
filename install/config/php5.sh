@@ -1,10 +1,10 @@
 #!/bin/bash -x
 ### Modify the configuration of php5.
 
-cat <<EOF > /etc/php5/conf.d/apc.ini
-extension=apc.so
-apc.mmap_file_mask=/tmp/apc.XXXXXX
-apc.shm_size=96M
+cat <<EOF > /etc/php5/mods-available/apcu.ini
+extension=apcu.so
+apcu.mmap_file_mask=/tmp/apcu.XXXXXX
+apcu.shm_size=96M
 EOF
 
 sed -i /etc/php5/apache2/php.ini \

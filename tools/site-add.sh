@@ -4,10 +4,11 @@
 ### get the parameters
 if [ $# -ne 1 ]
 then
-    echo " * Usage: $0 domain"
+    echo " * Usage: $0 <domain_config.sh>"
     exit 1
 fi
-domain=$1
+domain_config=$1
+source $domain_config
 
 if [ -d "/var/www/$domain" ]
 then
@@ -39,13 +40,31 @@ $mysql -e "
 "
 
 ### import the tables and initial data
-$mysql -D $db_name < /etc/invoices/invoices.sql
+if [ "$sample" = 'true' ]
+then
+    file_sql=/etc/invoices/invoices-sample.sql
+else
+    file_sql=/etc/invoices/invoices.sql
+fi
+$mysql -D $db_name < $file_sql
+
+### change email and password of the admin user
+hashpwd=$(echo -n $password | md5sum | cut -d' ' -f1)
+$mysql -e "
+    USE $db_name;
+    UPDATE si_user
+    SET
+        email = '$email',
+        password = '$hashpwd'
+    WHERE id = 1
+"
 
 ### modify config.php
 sed -i /var/www/$domain/config/config.php \
     -e "/^database.params.username/ c database.params.username = $db_user" \
     -e "/^database.params.password/ c database.params.password = $db_pass" \
-    -e "/^database.params.dbname/ c database.params.dbname = $db_name"
+    -e "/^database.params.dbname/ c database.params.dbname = $db_name" \
+    -e "/^authentication.enabled/ c authentication.enabled = true"
 
 ### modify the configuration of apache2
 rm -f /etc/apache2/sites-{available,enabled}/$domain{,-ssl}.conf

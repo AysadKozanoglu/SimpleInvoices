@@ -27,3 +27,5 @@ sed -i /data/wsproxy/hosts.txt -e "/^$container: m\.$domain/d"
 
 ### restart wsproxy
 /data/wsproxy/restart.sh
+sleep 5
+docker exec -t wsproxy /etc/init.d/apache2 restart
