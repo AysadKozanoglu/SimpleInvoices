@@ -44,7 +44,5 @@ $container: $domain
 $container: m.$domain
 EOF
 
-### restart wsproxy
-/data/wsproxy/restart.sh
-sleep 5
-docker exec -t wsproxy /etc/init.d/apache2 restart
+### reload wsproxy
+/data/wsproxy/reload.sh

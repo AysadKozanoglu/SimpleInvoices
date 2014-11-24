@@ -25,7 +25,5 @@ rm /data/wsproxy/config/etc/apache2/sites-{available,enabled}/m.$domain{,-ssl}.c
 sed -i /data/wsproxy/hosts.txt -e "/^$container: $domain/d"
 sed -i /data/wsproxy/hosts.txt -e "/^$container: m\.$domain/d"
 
-### restart wsproxy
-/data/wsproxy/restart.sh
-sleep 5
-docker exec -t wsproxy /etc/init.d/apache2 restart
+### reload wsproxy
+/data/wsproxy/reload.sh
