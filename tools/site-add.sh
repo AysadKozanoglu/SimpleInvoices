@@ -60,11 +60,13 @@ $mysql -e "
 "
 
 ### modify config.php
+nonce_key=$(mcookie)
 sed -i /var/www/$domain/config/config.php \
     -e "/^database.params.username/ c database.params.username = $db_user" \
     -e "/^database.params.password/ c database.params.password = $db_pass" \
     -e "/^database.params.dbname/ c database.params.dbname = $db_name" \
-    -e "/^authentication.enabled/ c authentication.enabled = true"
+    -e "/^authentication.enabled/ c authentication.enabled = true" \
+    -e "/^nonce.key/ c nonce.key = $nonce_key"
 
 ### modify the configuration of apache2
 rm -f /etc/apache2/sites-{available,enabled}/$domain{,-ssl}.conf

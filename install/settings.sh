@@ -3,6 +3,9 @@
 gmail_address='EmailAddress@gmail.com'
 gmail_password='gmailpassword'
 
+### Mysql root password. Leave it as 'random' to generate a new one randomly.
+mysql_passwd_root='random'
+
 ### Login through ssh.
 ### Only login through private keys is allowed.
 ### See also this:

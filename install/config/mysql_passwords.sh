@@ -8,7 +8,7 @@ mysql --defaults-file=/etc/mysql/debian.cnf -B \
 sed -i /etc/mysql/debian.cnf \
     -e "/^password/c password = $PASSWD"
 
-# regenerate phpmyadmin pmadb password
+# regenerate phpmyadmin password
 PASSWD=$(mcookie)
 sed -i /etc/phpmyadmin/config-db.php \
     -e "/^\$dbpass/ c \$dbpass='$PASSWD';"
