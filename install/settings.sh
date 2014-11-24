@@ -1,3 +1,8 @@
+
+### Gmail address and password that will be used to send invoices by email. 
+gmail_address='EmailAddress@gmail.com'
+gmail_password='gmailpassword'
+
 ### Login through ssh.
 ### Only login through private keys is allowed.
 ### See also this:

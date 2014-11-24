@@ -16,6 +16,7 @@ cd $(dirname $0)
 ### copy config files to the system
 cp -TdR overlay/ /
 
+config/simpleinv.sh
 config/cache.sh
 config/apache2.sh
 config/php5.sh
