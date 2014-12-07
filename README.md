@@ -34,3 +34,8 @@ cd /data/invoices/
 Now you can open in browser `test.example.org` and `m.test.example.org` and login with username `user@example.com` and password `testpwd`.
 
 This domain can be deleted with: `/data/invoices/site-del.sh invoices test.example.org`
+
+
+### Using wsproxy
+
+Using **wsproxy** (web server proxy) is optional, but sometimes it may be convenient. If you decide to use it, install it before installing invoices and put it in `/data/wsproxy` (`git clone https://github.com/dashohoxha/wsproxy /data/wsproxy`). For more details about installing and using it see its README file: https://github.com/dashohoxha/wsproxy/blob/master/README.md
