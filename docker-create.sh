@@ -6,8 +6,15 @@ container=${1:-invoices}
 domain=${2:-si.example.org}
 
 ### create a new container
-docker create --name="$container" --hostname="$domain" \
-    -v /data/invoices:/app:ro invoices
+if test -d /data/wsproxy
+then
+    docker create --name="$container" --hostname="$domain" \
+        -v /data/invoices:/app:ro invoices
+else
+    docker create --name="$container" --hostname="$domain" \
+        -v /data/invoices:/app:ro \
+        -p 80:80 -p 443:443 invoices
+fi
 
 ### the rest of the script is about configuration of wsproxy
 test -d /data/wsproxy || exit
