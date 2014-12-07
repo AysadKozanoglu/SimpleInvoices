@@ -38,4 +38,8 @@ This domain can be deleted with: `/data/invoices/site-del.sh invoices test.examp
 
 ### Using wsproxy
 
-Using **wsproxy** (web server proxy) is optional, but sometimes it may be convenient. If you decide to use it, install it before installing invoices and put it in `/data/wsproxy` (`git clone https://github.com/dashohoxha/wsproxy /data/wsproxy`). For more details about installing and using it see its README file: https://github.com/dashohoxha/wsproxy/blob/master/README.md
+Using **wsproxy** (web server proxy) is optional, but sometimes it may be convenient.
+
+If you decide to use it, install it before installing invoices and put it in `/data/wsproxy` (`git clone https://github.com/dashohoxha/wsproxy /data/wsproxy`).
+
+For more details about installing and using it see its README file: https://github.com/dashohoxha/wsproxy/blob/master/README.md
